@@ -17,8 +17,10 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   transpilePackages: ['@suraksha/ui', '@suraksha/i18n', '@suraksha/access-control', '@suraksha/db', '@suraksha/types', '@suraksha/agent-sdk'],
   experimental: {
-    // Server actions used for auth flows + intake submission
-    serverActions: { bodySizeLimit: '2mb' },
+    // Server actions used for auth flows, intake submission, and admin
+    // operations (rerun analyses, eval-lab updates) — 4mb covers admin's
+    // larger payloads. Was 2mb; raised when web-admin merged in.
+    serverActions: { bodySizeLimit: '4mb' },
   },
   images: {
     remotePatterns: [
@@ -29,13 +31,23 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Basic security headers. Tighten via CSP in infra before launch.
+        // Basic security headers (all paths). Tighten via CSP in infra
+        // before launch.
         source: '/:path*',
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
+        ],
+      },
+      {
+        // Admin-only overrides: never indexed, no referrer leak from
+        // internal links to upstream insurer/regulator sites.
+        source: '/admin/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
         ],
       },
     ];
