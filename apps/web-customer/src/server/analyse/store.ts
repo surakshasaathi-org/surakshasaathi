@@ -125,7 +125,7 @@ class DbStore implements AnalysisStore {
       .insert(schema.policyDocument)
       .values({
         tenantId: init.tenantId,
-        storagePath: init.fileMeta.storagePath ?? `dev-local/${init.id}`,
+        storagePath: init.fileMeta.storagePath ?? `uploads/${init.id}`,
         contentSha256: init.fileMeta.sha256 ?? 'unknown',
         mime: init.fileMeta.mime,
         sizeBytes: init.fileMeta.size,

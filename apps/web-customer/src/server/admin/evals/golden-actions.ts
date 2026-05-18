@@ -1,16 +1,14 @@
 'use server';
 
 import { createHash } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
-import { dirname } from 'node:path';
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { serviceDb, schema } from '@suraksha/db';
 import { requireAdminSession } from '@/lib/admin/auth';
+import { uploadPolicyDocument, STORAGE_PATH_PREFIX } from '@/server/analyse/storage';
 
 const TENANT_ID = '00000000-0000-0000-0000-000000000001';
 const FIXTURE_PREFIX = 'eval-fixtures';
-const STORAGE_ROOT = '/tmp/suraksha-uploads';
 const MAX_PDF_BYTES = 20 * 1024 * 1024;
 
 /**
@@ -806,13 +804,8 @@ export async function uploadCaseAttachment(
   if (existing) return { ok: true, documentId: existing.id };
 
   const ext = file.type === 'application/pdf' ? 'pdf' : file.type.split('/')[1] ?? 'bin';
-  // storage_path keeps the `dev-local/` prefix so the resolver in
-  // run-actions.ts (and the customer-side localStoragePath helper) can swap
-  // dev-local → Supabase Storage in prod by stripping the prefix.
-  const storagePath = `dev-local/${FIXTURE_PREFIX}/${sha}.${ext}`;
-  const fsPath = `${STORAGE_ROOT}/${storagePath.replace(/^dev-local\//, '')}`;
-  await mkdir(dirname(fsPath), { recursive: true });
-  await writeFile(fsPath, buf);
+  const storagePath = `${STORAGE_PATH_PREFIX}${FIXTURE_PREFIX}/${sha}.${ext}`;
+  await uploadPolicyDocument(storagePath, buf, file.type);
 
   const expiresAt = new Date(Date.now() + 365 * 24 * 3600 * 1000); // 1 year
   const [inserted] = await db

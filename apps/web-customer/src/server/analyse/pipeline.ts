@@ -1,5 +1,4 @@
 import 'server-only';
-import { readFile } from 'node:fs/promises';
 import {
   digitizerModelsAnthropic,
   invokeAgent,
@@ -14,7 +13,7 @@ import {
 } from './store';
 import { demoReportFor, type AnalysisReport } from './demo-report';
 import { loadAgentDefinition, makePersistRun } from './agent-runs';
-import { localStoragePath } from './storage';
+import { downloadPolicyDocument } from './storage';
 import type {
   CoverageOutput,
   DemographicsInput,
@@ -137,7 +136,7 @@ async function runReal(analysisId: string) {
 
   let fileAttachment: InlineAttachment;
   try {
-    const buf = await readFile(localStoragePath(rec.fileMeta.storagePath));
+    const buf = await downloadPolicyDocument(rec.fileMeta.storagePath);
     fileAttachment = { mime: rec.fileMeta.mime, data: buf };
   } catch (err) {
     throw new Error(
