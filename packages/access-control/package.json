@@ -1,0 +1,29 @@
+{
+  "name": "@suraksha/access-control",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Server-side access-control middleware: auth level × tier × feature flag × tenant × role. Composable guards.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./guards": "./src/guards.ts",
+    "./flags": "./src/flags.ts",
+    "./context": "./src/context.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --max-warnings 0",
+    "test": "vitest run",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@suraksha/types": "workspace:*",
+    "@suraksha/db": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "surakshasaathi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SurakshaSaathi — India's protection companion. Multi-tenant, multi-agent insurance advisory platform.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.11.0 <23",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "db:generate": "pnpm --filter @suraksha/db generate",
+    "db:migrate": "pnpm --filter @suraksha/db migrate",
+    "db:seed": "pnpm --filter @suraksha/db seed",
+    "i18n:check": "pnpm --filter @suraksha/i18n check",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\" --ignore-path .gitignore",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.1.5",
+    "@vitest/ui": "^2.1.5"
+  }
+}

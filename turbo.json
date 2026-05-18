@@ -1,0 +1,45 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env", "tsconfig.base.json"],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_APP_ENV",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "DATABASE_URL",
+    "DIRECT_DATABASE_URL",
+    "ANTHROPIC_API_KEY",
+    "RAZORPAY_KEY_ID",
+    "RAZORPAY_KEY_SECRET",
+    "WATI_API_KEY",
+    "WATI_BASE_URL",
+    "TRIGGER_SECRET_KEY",
+    "SENTRY_DSN",
+    "MSG91_AUTH_KEY"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

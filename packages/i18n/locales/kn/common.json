@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "ಮುಖಪುಟ",
+    "claimsRecovery": "ಕ್ಲೈಮ್",
+    "policyAdvisory": "ಪಾಲಿಸಿ ಸಲಹೆ",
+    "govtSchemes": "ಸರ್ಕಾರಿ ಯೋಜನೆ",
+    "seniors": "ಹಿರಿಯರು",
+    "msme": "ವ್ಯಾಪಾರ",
+    "login": "ಸೈನ್ ಇನ್",
+    "getStarted": "ಪ್ರಾರಂಭಿಸಿ"
+  },
+  "langToggle": {
+    "label": "ಭಾಷೆ",
+    "en": "English",
+    "hi": "हिन्दी",
+    "kn": "ಕನ್ನಡ"
+  },
+  "cta": {
+    "startFree": "ಪ್ರಾರಂಭಿಸಿ — ಉಚಿತ",
+    "checkEligibility": "ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ",
+    "analysePolicy": "ನನ್ನ ಪಾಲಿಸಿ ಪರಿಶೀಲಿಸಿ",
+    "talkToAdvisor": "ಸಲಹೆಗಾರರೊಂದಿಗೆ ಮಾತನಾಡಿ",
+    "submitCase": "ನನ್ನ ಪ್ರಕರಣ ಸಲ್ಲಿಸಿ",
+    "learnMore": "ಹೆಚ್ಚು ತಿಳಿಯಿರಿ",
+    "joinWaitlist": "ವೇಟ್‌ಲಿಸ್ಟ್‌ಗೆ ಸೇರಿ",
+    "notifyMe": "ಲಾಂಚ್ ಆದಾಗ ತಿಳಿಸಿ",
+    "backToAll": "ಎಲ್ಲಾ ಉಪಕರಣಗಳಿಗೆ",
+    "shareWhatsApp": "WhatsApp ನಲ್ಲಿ ಹಂಚಿಕೊಳ್ಳಿ"
+  },
+  "pricing": {
+    "freeLabel": "ಯಾವಾಗಲೂ ಉಚಿತ",
+    "paidLabel": "ಪಾವತಿಯ",
+    "successFeeLabel": "ಗೆಲುವಿಗೆ ಮಾತ್ರ ಶುಲ್ಕ",
+    "subscriptionLabel": "ವಾರ್ಷಿಕ ಪ್ಲಾನ್"
+  },
+  "status": {
+    "live": "ಲೈವ್",
+    "beta": "ಬೀಟಾ",
+    "comingSoon": "ಶೀಘ್ರದಲ್ಲೇ",
+    "launchingSoon": "ಶೀಘ್ರ ಲಾಂಚ್"
+  },
+  "waitlist": {
+    "emailPlaceholder": "neevu@email.com",
+    "submit": "ಪಟ್ಟಿಗೆ ಸೇರಿ",
+    "success": "ನೀವು ಪಟ್ಟಿಯಲ್ಲಿದ್ದೀರಿ. ಲಾಂಚ್ ಆದಾಗ ಇಮೇಲ್ ಮಾಡುತ್ತೇವೆ.",
+    "alreadyOnList": "ನೀವು ಈ ವೇಟ್‌ಲಿಸ್ಟ್‌ನಲ್ಲಿ ಈಗಾಗಲೇ ಇದ್ದೀರಿ.",
+    "errorGeneric": "ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "privacyNote": "ನಿಮ್ಮ ಇಮೇಲ್ ಅನ್ನು ಲಾಂಚ್ ಮಾಹಿತಿಗಾಗಿ ಮಾತ್ರ ಬಳಸುತ್ತೇವೆ. ಮಾರ್ಕೆಟಿಂಗ್ ಇಲ್ಲ. ಒಂದು ಕ್ಲಿಕ್‌ನಲ್ಲಿ ಅನ್‌ಸಬ್‌ಸ್ಕ್ರೈಬ್."
+  },
+  "errors": {
+    "generic": "ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "notAuthenticated": "ಮುಂದುವರಿಯಲು ಸೈನ್ ಇನ್ ಮಾಡಿ.",
+    "notAuthorized": "ನಿಮಗೆ ಇದಕ್ಕೆ ಅನುಮತಿ ಇಲ್ಲ.",
+    "tierRequired": "ಈ ವೈಶಿಷ್ಟ್ಯ ಪಾವತಿಯ ಪ್ಲಾನ್‌ನಲ್ಲಿದೆ.",
+    "rateLimited": "ಹಲವು ವಿನಂತಿಗಳು. ಸ್ವಲ್ಪ ಹೊತ್ತಿನಲ್ಲಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+  }
+}

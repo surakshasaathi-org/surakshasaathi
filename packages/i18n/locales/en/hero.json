@@ -1,0 +1,38 @@
+{
+  "eyebrow": "Before. During. After.",
+  "headline": "India's platform for winning every protection claim.",
+  "subhead": "From the policy you just bought to the rejection you're fighting today — from the scheme you didn't know existed to the money a loved one left unclaimed. One platform for every chapter of your family's protection.",
+  "primaryCta": "Analyse my policy — free",
+  "secondaryCta": "See schemes my family qualifies for — free",
+  "trustSignal": "No broker license. No policy pushing. Independent advocacy, on your side only.",
+  "stats": [
+    { "label": "Health claims rejected last year", "value": "₹26,000 cr" },
+    { "label": "Eligible families never enrolled in PM-JAY", "value": "70%" },
+    { "label": "Life insurance money sitting unclaimed", "value": "₹14,000 cr" }
+  ],
+  "howItWorks": {
+    "title": "How the platform works",
+    "steps": [
+      { "heading": "Tell us where you are in the journey", "body": "Preparing for a claim you may need tomorrow. In the middle of one right now. Or recovering what's owed from something that already happened." },
+      { "heading": "Get a clear, personalised answer", "body": "In plain language. In your language. Every claim you have — on an insurer, the government, or a bank — read by an AI trained on Indian protection law." },
+      { "heading": "We stay with you until you win", "body": "Your analyses, your schemes, your cases — remembered. Before, during, and after. We're your family's protection record for life." }
+    ]
+  },
+  "chapters": {
+    "before": {
+      "label": "Before",
+      "title": "Know what you have. Fix the gaps.",
+      "subtitle": "The moment begins long before a hospital bed. Understand your policy, score your family's adequacy, discover the schemes you qualify for — all before anything goes wrong."
+    },
+    "during": {
+      "label": "During",
+      "title": "When the moment hits, we take it on.",
+      "subtitle": "A hospital refuses your card. An insurer stonewalls you. Your business faces a claim. Real-time guidance, regulator-ready escalation, scripts in your language."
+    },
+    "after": {
+      "label": "After",
+      "title": "The money you're owed — recovered.",
+      "subtitle": "A rejection you want to fight. A deceased relative's benefit nobody told your family about. A ULIP your parent was mis-sold. We help you get back what's yours."
+    }
+  }
+}

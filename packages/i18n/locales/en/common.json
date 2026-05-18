@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "Home",
+    "claimsRecovery": "Claims",
+    "policyAdvisory": "Policy Advisory",
+    "govtSchemes": "Govt Schemes",
+    "seniors": "Seniors",
+    "msme": "For Businesses",
+    "login": "Sign in",
+    "getStarted": "Get started"
+  },
+  "langToggle": {
+    "label": "Language",
+    "en": "English",
+    "hi": "हिन्दी",
+    "kn": "ಕನ್ನಡ"
+  },
+  "cta": {
+    "startFree": "Start — it's free",
+    "checkEligibility": "Check my eligibility",
+    "analysePolicy": "Analyse my policy",
+    "talkToAdvisor": "Talk to an advisor",
+    "submitCase": "Submit my case",
+    "learnMore": "Learn more",
+    "joinWaitlist": "Join the waitlist",
+    "notifyMe": "Notify me at launch",
+    "backToAll": "Back to all tools",
+    "shareWhatsApp": "Share on WhatsApp"
+  },
+  "pricing": {
+    "freeLabel": "Always free",
+    "paidLabel": "Paid",
+    "successFeeLabel": "Only if we win",
+    "subscriptionLabel": "Annual plan"
+  },
+  "status": {
+    "live": "Live",
+    "beta": "Beta",
+    "comingSoon": "Coming soon",
+    "launchingSoon": "Launching soon"
+  },
+  "waitlist": {
+    "emailPlaceholder": "you@email.com",
+    "submit": "Join the list",
+    "success": "You're on the list. We'll email when we launch.",
+    "alreadyOnList": "You're already on this waitlist.",
+    "errorGeneric": "Something went wrong. Try again in a moment.",
+    "privacyNote": "We use your email only to tell you when we launch. No marketing. Unsubscribe in one click."
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notAuthenticated": "Please sign in to continue.",
+    "notAuthorized": "You do not have access to this.",
+    "tierRequired": "This feature is on our paid plan.",
+    "rateLimited": "Too many requests. Please try again in a moment."
+  }
+}

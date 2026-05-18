@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "होम",
+    "claimsRecovery": "दावे",
+    "policyAdvisory": "पॉलिसी सलाह",
+    "govtSchemes": "सरकारी योजनाएं",
+    "seniors": "वरिष्ठ",
+    "msme": "व्यापार",
+    "login": "लॉग इन",
+    "getStarted": "शुरू करें"
+  },
+  "langToggle": {
+    "label": "भाषा",
+    "en": "English",
+    "hi": "हिन्दी",
+    "kn": "ಕನ್ನಡ"
+  },
+  "cta": {
+    "startFree": "शुरू करें — मुफ्त",
+    "checkEligibility": "पात्रता जाँचें",
+    "analysePolicy": "मेरी पॉलिसी जाँचें",
+    "talkToAdvisor": "सलाहकार से बात करें",
+    "submitCase": "मेरा केस दर्ज करें",
+    "learnMore": "और जानें",
+    "joinWaitlist": "वेटलिस्ट में जुड़ें",
+    "notifyMe": "लॉन्च पर सूचित करें",
+    "backToAll": "सभी टूल पर वापस",
+    "shareWhatsApp": "WhatsApp पर शेयर करें"
+  },
+  "pricing": {
+    "freeLabel": "हमेशा मुफ्त",
+    "paidLabel": "सशुल्क",
+    "successFeeLabel": "जीत पर ही शुल्क",
+    "subscriptionLabel": "वार्षिक प्लान"
+  },
+  "status": {
+    "live": "लाइव",
+    "beta": "बीटा",
+    "comingSoon": "जल्द ही",
+    "launchingSoon": "जल्द लॉन्च"
+  },
+  "waitlist": {
+    "emailPlaceholder": "aap@email.com",
+    "submit": "लिस्ट में जुड़ें",
+    "success": "आप लिस्ट में हैं। लॉन्च पर हम ईमेल करेंगे।",
+    "alreadyOnList": "आप इस वेटलिस्ट में पहले से हैं।",
+    "errorGeneric": "कुछ गड़बड़ हुई। कृपया फिर से कोशिश करें।",
+    "privacyNote": "हम आपके ईमेल का उपयोग केवल लॉन्च सूचना के लिए करेंगे। कोई मार्केटिंग नहीं। एक क्लिक में अनसब्सक्राइब।"
+  },
+  "errors": {
+    "generic": "कुछ गड़बड़ हुई। कृपया फिर से कोशिश करें।",
+    "notAuthenticated": "जारी रखने के लिए साइन इन करें।",
+    "notAuthorized": "आपको इसकी अनुमति नहीं है।",
+    "tierRequired": "यह सुविधा सशुल्क प्लान में है।",
+    "rateLimited": "बहुत सारे अनुरोध। कृपया थोड़ी देर बाद कोशिश करें।"
+  }
+}

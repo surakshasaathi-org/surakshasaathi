@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+
+# Build outputs
+dist/
+.next/
+.turbo/
+out/
+build/
+*.tsbuildinfo
+
+# Environment — never commit secrets
+.env
+.env.*.local
+.env.local
+.env.development.local
+.env.production.local
+!.env.example
+
+# IDE
+.vscode/
+!.vscode/settings.shared.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test
+coverage/
+.nyc_output/
+
+# Supabase local
+supabase/.branches
+supabase/.temp
+
+# Trigger.dev local
+.trigger/
+
+# Claude Code private
+.claude/

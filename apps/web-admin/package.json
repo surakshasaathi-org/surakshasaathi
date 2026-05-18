@@ -1,0 +1,41 @@
+{
+  "name": "@suraksha/web-admin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Admin portal for SurakshaSaathi ops — case queue, scheme DB, feature flags, agent prompts, DPDP, audit.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .turbo"
+  },
+  "dependencies": {
+    "@suraksha/types": "workspace:*",
+    "@suraksha/db": "workspace:*",
+    "drizzle-orm": "^0.36.4",
+    "@suraksha/i18n": "workspace:*",
+    "@suraksha/ui": "workspace:*",
+    "@suraksha/access-control": "workspace:*",
+    "@suraksha/agent-sdk": "workspace:*",
+    "@suraksha/eval-lab": "workspace:*",
+    "@sentry/nextjs": "^8.42.0",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.46.1",
+    "lucide-react": "^0.454.0",
+    "next": "^15.0.3",
+    "react": "^19.0.0-rc-02c0e824-20241028",
+    "react-dom": "^19.0.0-rc-02c0e824-20241028"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.5.4"
+  }
+}

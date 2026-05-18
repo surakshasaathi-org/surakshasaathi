@@ -1,0 +1,28 @@
+{
+  "tagline": "India's protection companion.",
+  "sections": {
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "help": "Help"
+  },
+  "links": {
+    "claimsRecovery": "Claims recovery",
+    "policyAdvisory": "Policy advisory",
+    "govtSchemes": "Government schemes",
+    "seniors": "For senior citizens",
+    "msme": "For businesses",
+    "misSelling": "Mis-selling recovery",
+    "about": "About us",
+    "careers": "Careers",
+    "blog": "Blog",
+    "privacy": "Privacy policy",
+    "terms": "Terms of service",
+    "dpdp": "DPDP notice",
+    "grievance": "Grievance officer",
+    "help": "Help centre",
+    "contact": "Contact support"
+  },
+  "legalLine": "Suraksha Saathi operates as an information and document-preparation service. We do not sell insurance policies. We do not hold an IRDAI broker license. We receive no commission from any insurer.",
+  "copyright": "© {year} Suraksha Saathi"
+}

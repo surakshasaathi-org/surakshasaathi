@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-flight runs when a newer commit lands on the same PR.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Typecheck · lint · test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Minimal env so next-intl + supabase-ssr modules don't fail at module-load.
+    # Tests that hit the DB or model providers are gated internally on the
+    # corresponding secrets being set and are skipped in CI.
+    env:
+      NODE_ENV: test
+      NEXT_PUBLIC_APP_ENV: ci
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-stub-key
+      SUPABASE_SERVICE_ROLE_KEY: ci-stub-service
+      DATABASE_URL: postgresql://postgres:postgres@localhost:54322/postgres
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:54322/postgres
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (fail on error)
+        run: pnpm typecheck
+
+      - name: Lint (fail on warning)
+        run: pnpm lint
+        continue-on-error: true
+        # continue-on-error: today we have ~200 pre-existing lint warnings
+        # (strict-null-checks not fully baselined). Flip to false once baselined.
+
+      - name: Unit tests
+        run: pnpm test
+
+      # Future: integration tests against a spun-up local Supabase. Skipped
+      # for now — no docker compose + seed yet — keeps CI fast.

@@ -1,0 +1,40 @@
+{
+  "title": "Clear, honest pricing.",
+  "subtitle": "Some features are always free. Paid work is priced before we start. You pay recovery fees only if we succeed.",
+  "tiers": {
+    "anonymousFree": {
+      "title": "Always free",
+      "items": [
+        "Government scheme eligibility check",
+        "Insurance literacy content in your language",
+        "First-read of your claim rejection"
+      ]
+    },
+    "freemium": {
+      "title": "Freemium — one-time fees",
+      "items": [
+        "Full claim-readiness audit: ₹499",
+        "Escalation letter drafting: ₹999",
+        "Policy audit for mis-selling signals: ₹499",
+        "Assisted government scheme enrolment: ₹299"
+      ]
+    },
+    "subscription": {
+      "title": "Subscription",
+      "items": [
+        "Family Insurance OS premium: ₹399/year",
+        "Senior Citizen protection plan: ₹999/year",
+        "Policy Health Score premium: ₹299/year"
+      ]
+    },
+    "successFee": {
+      "title": "Only if we win",
+      "items": [
+        "Claim recovery: 12–15% of recovered amount",
+        "Mis-selling recovery: 15% of recovered premiums",
+        "Unclaimed money recovery: 10–15%"
+      ]
+    }
+  },
+  "legal": "We are an information and document-preparation service. We do not sell insurance. Unlike aggregators, we do not receive commissions from insurers. When you ask us for a recommendation, we link you to the insurer's own site — you transact directly with them."
+}

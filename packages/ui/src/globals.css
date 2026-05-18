@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Cred-modern dark base. Deep navy near-black with a warm undertone so
+     it doesn't read as cold blue-gray. Pairs with electric-mint primary +
+     amber secondary accents. Light mode is preserved for print / a11y. */
+  --background: 220 28% 6%;
+  --foreground: 210 20% 96%;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html.light {
+  /* Light mode — used by the admin app (apps/web-admin layout sets
+     class="light"). Customer + marketing apps stay on the dark default. */
+  --background: 0 0% 100%;
+  --foreground: 220 30% 10%;
+}
+
+/* Light-mode overrides for the design-system tokens that the Tailwind
+   preset baked in as literal hsl values. Without these, classes like
+   `bg-card` / `text-ink` resolve to dark even when html.light is active.
+   These rules use higher specificity (html.light .x) to win against
+   Tailwind's utility output. They DO NOT affect customer/marketing apps
+   because those don't apply the .light class. */
+html.light .text-ink { color: hsl(220 30% 12%); }
+html.light .text-ink-muted { color: hsl(220 12% 35%); }
+html.light .text-ink-subtle { color: hsl(220 10% 50%); }
+html.light .text-ink-deep { color: hsl(220 30% 6%); }
+html.light .text-ink-deep-muted { color: hsl(220 12% 30%); }
+html.light .text-ink-deep-subtle { color: hsl(220 10% 45%); }
+html.light .text-foreground { color: hsl(220 30% 12%); }
+
+html.light .bg-card { background-color: hsl(0 0% 100%); }
+html.light .bg-surface { background-color: hsl(220 30% 98%); }
+html.light .bg-surface-elevated { background-color: hsl(0 0% 100%); }
+html.light .bg-surface-hover { background-color: hsl(220 20% 95%); }
+html.light .bg-input { background-color: hsl(0 0% 100%); }
+
+/* Background-with-opacity utilities Tailwind expands into hsl(... / N) —
+   admin pages use these for translucent panels; flip the underlying base. */
+html.light .bg-background\/60,
+html.light .bg-background\/85 { background-color: hsl(0 0% 100% / 0.85); }
+html.light .bg-background\/40 { background-color: hsl(0 0% 100% / 0.6); }
+
+html.light .border-border { border-color: hsl(220 15% 88%); }
+html.light .border-input { border-color: hsl(220 15% 82%); }
+html.light .border-l-border { border-left-color: hsl(220 15% 88%); }
+
+/* Subtle "tint" backgrounds used for status pills + cards — flip from
+   dark-tint (low lightness) to light-tint (high lightness) so they read
+   as soft backgrounds on a white canvas, not muddy slabs. */
+html.light .bg-success-subtle { background-color: hsl(160 60% 92%); }
+html.light .bg-warn-subtle    { background-color: hsl(38 90% 92%); }
+html.light .bg-danger-subtle  { background-color: hsl(0 70% 94%); }
+html.light .bg-primary-subtle { background-color: hsl(160 70% 92%); }
+
+/* The body's ambient mint+amber gradient was tuned for the dark canvas;
+   on white it reads as muddy. Strip it for light. */
+html.light body {
+  background-image: none;
+}
+
+/* Language-specific tuning — Devanagari and Kannada need slightly looser line-height
+   for readability at body sizes. */
+:lang(hi),
+:lang(mr) {
+  font-feature-settings: 'locl' 1;
+  line-height: 1.55;
+}
+
+:lang(kn),
+:lang(ta),
+:lang(te),
+:lang(ml) {
+  line-height: 1.6;
+}
+
+/* RTL defaults for Urdu (Phase 3). */
+[dir='rtl'] {
+  text-align: right;
+}
+
+/* Never show the raw focus ring on buttons the design system owns — those use :focus-visible. */
+button:focus {
+  outline: none;
+}
+button:focus-visible {
+  outline: 2px solid hsl(var(--ring, 160 95% 55%));
+  outline-offset: 2px;
+}
+
+/* Form-control defaults — the dark canvas would otherwise show typed text
+   in the browser-UA black, invisible on bg-card. Tailwind's `bg-*` utilities
+   change the field background but never set `color` automatically; we
+   force-inherit foreground so any <input>/<textarea>/<select> on the dark
+   shell stays readable. (2026-05-07 — fix for unreadable admin inputs.) */
+input,
+textarea,
+select {
+  color: hsl(var(--foreground));
+  caret-color: hsl(var(--foreground));
+}
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--foreground) / 0.45);
+}
+/* Autofilled fields (Chrome/Safari) override our color with a baked-in
+   off-white box. Force-inherit the text color so autofilled values stay
+   readable; the off-white box is acceptable since it's a UA affordance. */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: hsl(var(--foreground));
+  caret-color: hsl(var(--foreground));
+}
+
+/* Ambient gradient — soft mint glow top-left + amber glow bottom-right.
+   Fixed so it doesn't scroll, very low opacity. Gives the dark canvas
+   depth without competing with content. */
+body {
+  background-image:
+    radial-gradient(ellipse 1200px 600px at 0% 0%, hsl(160 95% 55% / 0.07), transparent 60%),
+    radial-gradient(ellipse 1200px 600px at 100% 100%, hsl(35 90% 60% / 0.05), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Selection — mint highlight */
+::selection {
+  background: hsl(160 95% 55% / 0.3);
+  color: hsl(210 20% 96%);
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@suraksha/web-partner",
+  "version": "0.0.1",
+  "private": true,
+  "description": "B2B white-label portal (NGO / HR / CSC / broker). Phase 2+ — slot reserved.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3003",
+    "build": "next build",
+    "start": "next start --port 3003",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .turbo"
+  },
+  "dependencies": {
+    "@suraksha/ui": "workspace:*",
+    "next": "^15.0.3",
+    "react": "^19.0.0-rc-02c0e824-20241028",
+    "react-dom": "^19.0.0-rc-02c0e824-20241028"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.5.4"
+  }
+}
