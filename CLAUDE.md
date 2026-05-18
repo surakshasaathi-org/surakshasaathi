@@ -9,7 +9,7 @@ surakshasaathi.com — India's Protection Companion. Long-horizon platform (5+ y
 - **Repo:** `surakshasaathi-org/surakshasaathi` (private). Personal handle `surakshasaathi` transferred to org `surakshasaathi-org`.
 - **Branch protection:** deferred. GitHub Free plan blocks rulesets on private repos. Until org upgrades to Team, the no-direct-push-to-`main` rule is enforced socially + by Claude. Re-enable rulesets the day the org upgrades or the first new collaborator joins.
 - **Environments:** UAT (`surakshasaathi-uat`) and Prod (`surakshasaathi-prod`), both Supabase Mumbai. UAT shared between local dev and Vercel previews. See ADR 0006.
-- **Vercel projects at MVP:** `surakshasaathi-customer` (→ `surakshasaathi.com` + `www`) and `surakshasaathi-admin` (→ `admin.surakshasaathi.com`). `web-support` and `web-partner` deferred.
+- **Vercel projects at MVP:** single project `surakshasaathi-customer` (→ `surakshasaathi.com` + `www`). Admin merged into the same Next.js app at `/admin/*` per ADR 0007 (supersedes the two-project plan in ADR 0006). `web-support` and `web-partner` deferred — not deployed, not deleted.
 - **DNS:** GoDaddy registrar, Vercel-native DNS. No Cloudflare in front for MVP.
 - **Prod DB migrations:** GitHub Actions `db-migrate-prod` workflow, gated by `production` GitHub Environment with required-reviewer approval. Prod creds never leave that secret scope. See `.github/workflows/db-migrate-prod.yml`.
 
