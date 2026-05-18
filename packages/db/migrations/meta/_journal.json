@@ -12,8 +12,106 @@
     {
       "idx": 1,
       "version": "7",
-      "when": 1776943780453,
-      "tag": "0001_fast_marvel_zombies",
+      "when": 1776564070517,
+      "tag": "0001_rls_policies",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776564071517,
+      "tag": "0002_analyses_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776564072517,
+      "tag": "0003_auth_and_user_link",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1776564073517,
+      "tag": "0004_multi_agent_v2",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1776564074517,
+      "tag": "0005_upload_event",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1776564075517,
+      "tag": "0006_user_profile",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1776564076517,
+      "tag": "0007_family_and_policy_link",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1776564077517,
+      "tag": "0008_notifications_schemes_activity",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1776564078517,
+      "tag": "0009_family_member_status",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1776564079517,
+      "tag": "0010_readiness_score",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1776564080517,
+      "tag": "0011_readiness_score_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1776564081517,
+      "tag": "0012_eval_lab",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1776564082517,
+      "tag": "0013_agent_run_analysis_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1776564083517,
+      "tag": "0014_analysis_status_digitizing",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1776564084517,
+      "tag": "0015_agent_provider_model_override",
       "breakpoints": true
     }
   ]
