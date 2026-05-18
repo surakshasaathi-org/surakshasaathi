@@ -12,6 +12,7 @@ surakshasaathi.com — India's Protection Companion. Long-horizon platform (5+ y
 - **Vercel projects at MVP:** single project `surakshasaathi-customer` (→ `surakshasaathi.com` + `www`). Admin merged into the same Next.js app at `/admin/*` per ADR 0007 (supersedes the two-project plan in ADR 0006). `web-support` and `web-partner` deferred — not deployed, not deleted.
 - **DNS:** GoDaddy registrar, Vercel-native DNS. No Cloudflare in front for MVP.
 - **Prod DB migrations:** GitHub Actions `db-migrate-prod` workflow, gated by `production` GitHub Environment with required-reviewer approval. Prod creds never leave that secret scope. See `.github/workflows/db-migrate-prod.yml`.
+- **Admin bootstrap email:** the auto-promote-to-super_admin mechanism (`ADMIN_BOOTSTRAP_EMAIL`, formerly `UAT_ADMIN_EMAIL`) is now enabled in **all environments** including prod. Prod value: `admin@surakshasaathi.com` (org owner inbox, 2FA required). The variable is intentionally a foot-gun — unset it in prod Vercel once human admins have been granted via the admin portal, so the bootstrap path is closed.
 
 ## Session Decisions — 2026-04-18 (MVP Plan)
 

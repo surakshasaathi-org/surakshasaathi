@@ -238,7 +238,7 @@ export async function signOutAction(): Promise<void> {
 export async function onSignedIn(): Promise<{ claimedCount: number }> {
   // Promote the UAT admin if configured + matching. Run before claim so
   // failure here still lets analysis claim proceed.
-  await maybePromoteUatAdmin();
+  await maybePromoteBootstrapAdmin();
   // Seed initial required-consent rows so the DPDP audit log starts with
   // a full record on signup. Idempotent — skips any purpose already recorded.
   try {
@@ -271,23 +271,27 @@ export async function onSignedIn(): Promise<{ claimedCount: number }> {
 }
 
 /**
- * If the signed-in user's email matches UAT_ADMIN_EMAIL, upsert a
+ * If the signed-in user's email matches ADMIN_BOOTSTRAP_EMAIL, upsert a
  * super_admin membership row on the default tenant. Idempotent — the
  * underlying (tenant_id, user_id) unique index means re-runs are no-ops
  * but updates the role if it changed.
  *
+ * Works in any environment. Intended bootstrap mechanism for the first
+ * super_admin of a fresh tenant; unset the env var in prod once human
+ * admins have been granted via the admin portal.
+ *
  * Never throws — promotion is a nice-to-have, not a signin blocker.
  */
-async function maybePromoteUatAdmin(): Promise<void> {
-  const uatEmail = process.env.UAT_ADMIN_EMAIL?.trim().toLowerCase();
-  if (!uatEmail) return;
+async function maybePromoteBootstrapAdmin(): Promise<void> {
+  const bootstrapEmail = process.env.ADMIN_BOOTSTRAP_EMAIL?.trim().toLowerCase();
+  if (!bootstrapEmail) return;
 
   try {
     const supabase = await supabaseServer();
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     if (!user?.email) return;
-    if (user.email.trim().toLowerCase() !== uatEmail) return;
+    if (user.email.trim().toLowerCase() !== bootstrapEmail) return;
 
     const db = serviceDb();
     // Ensure the app_user mirror row exists before we write the membership.
@@ -316,16 +320,16 @@ async function maybePromoteUatAdmin(): Promise<void> {
         userId: user.id,
         role: 'super_admin',
       });
-      console.log(`[auth] promoted UAT admin to super_admin email=${user.email}`);
+      console.log(`[auth] promoted bootstrap admin to super_admin email=${user.email}`);
     } else if (existing[0]!.role !== 'super_admin') {
       await db
         .update(schema.membership)
         .set({ role: 'super_admin' })
         .where(eq(schema.membership.id, existing[0]!.id));
-      console.log(`[auth] re-promoted UAT admin to super_admin email=${user.email}`);
+      console.log(`[auth] re-promoted bootstrap admin to super_admin email=${user.email}`);
     }
   } catch (err) {
-    console.warn('[auth] UAT admin promotion failed (non-fatal)', (err as Error).message);
+    console.warn('[auth] bootstrap admin promotion failed (non-fatal)', (err as Error).message);
   }
 }
 

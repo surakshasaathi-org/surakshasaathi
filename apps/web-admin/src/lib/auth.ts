@@ -10,9 +10,10 @@ import type { Role } from '@suraksha/types';
  * Three paths:
  *   1. Supabase not configured → auto-grant super_admin so every page renders
  *      in local dev without a running Supabase instance.
- *   2. UAT_ADMIN_EMAIL matches the signed-in user → upsert a super_admin
+ *   2. ADMIN_BOOTSTRAP_EMAIL matches the signed-in user → upsert a super_admin
  *      membership + grant. Lets ops sign in with a real account and land in
- *      the portal without hand-running SQL.
+ *      the portal without hand-running SQL. Works in any environment; unset
+ *      in prod once human admins have been granted via the admin portal.
  *   3. Otherwise → look up the user's membership row on the default tenant
  *      and gate on its role. Missing row defaults to 'member' in prod
  *      (always denied for admin routes); in local dev we auto-grant
@@ -57,9 +58,9 @@ export async function requireAdminSession(allowed: Role[]): Promise<AdminSession
     (user.user_metadata?.full_name as string | undefined) ??
     null;
 
-  // Path 2: UAT admin email bootstrap.
-  const uatEmail = process.env.UAT_ADMIN_EMAIL?.trim().toLowerCase();
-  if (uatEmail && email && email === uatEmail) {
+  // Path 2: admin bootstrap email.
+  const bootstrapEmail = process.env.ADMIN_BOOTSTRAP_EMAIL?.trim().toLowerCase();
+  if (bootstrapEmail && email && email === bootstrapEmail) {
     await ensureSuperAdminMembership(user.id, email);
     if (!allowed.includes('super_admin')) redirect('/403');
     return {
@@ -140,6 +141,6 @@ async function ensureSuperAdminMembership(userId: string, email: string): Promis
         .where(eq(schema.membership.id, existing[0]!.id));
     }
   } catch (err) {
-    console.warn('[admin/auth] UAT admin promotion failed (non-fatal)', (err as Error).message);
+    console.warn('[admin/auth] bootstrap admin promotion failed (non-fatal)', (err as Error).message);
   }
 }
