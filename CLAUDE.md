@@ -4,6 +4,15 @@ surakshasaathi.com — India's Protection Companion. Long-horizon platform (5+ y
 
 **Source docs** (authoritative): `docs/SurakshaSaathi_Product_Strategy.docx` and `docs/SurakshaSaathi_Claude_Code_Instructions.docx`. Readable markdown extracts alongside. This CLAUDE.md condenses them plus in-session decisions.
 
+## Session Decisions — 2026-05-18 (Infra Bootstrap)
+
+- **Repo:** `surakshasaathi-org/surakshasaathi` (private). Personal handle `surakshasaathi` transferred to org `surakshasaathi-org`.
+- **Branch protection:** deferred. GitHub Free plan blocks rulesets on private repos. Until org upgrades to Team, the no-direct-push-to-`main` rule is enforced socially + by Claude. Re-enable rulesets the day the org upgrades or the first new collaborator joins.
+- **Environments:** UAT (`surakshasaathi-uat`) and Prod (`surakshasaathi-prod`), both Supabase Mumbai. UAT shared between local dev and Vercel previews. See ADR 0006.
+- **Vercel projects at MVP:** `surakshasaathi-customer` (→ `surakshasaathi.com` + `www`) and `surakshasaathi-admin` (→ `admin.surakshasaathi.com`). `web-support` and `web-partner` deferred.
+- **DNS:** GoDaddy registrar, Vercel-native DNS. No Cloudflare in front for MVP.
+- **Prod DB migrations:** GitHub Actions `db-migrate-prod` workflow, gated by `production` GitHub Environment with required-reviewer approval. Prod creds never leave that secret scope. See `.github/workflows/db-migrate-prod.yml`.
+
 ## Session Decisions — 2026-04-18 (MVP Plan)
 
 - **Verticals:** All 8 idea skeletons ship Day 1 (landing pages + intake + admin case queue). Full backends at launch: Idea 1 Claims Advocacy + Idea 3 Govt Scheme Navigator (TBC). Remaining 6 run human-in-loop behind admin portal while their backends are built.

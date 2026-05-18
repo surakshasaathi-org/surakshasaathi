@@ -23,7 +23,8 @@
     "@anthropic-ai/sdk": "^0.88.0",
     "@google/generative-ai": "^0.21.0",
     "@suraksha/db": "workspace:*",
-    "@suraksha/types": "workspace:*"
+    "@suraksha/types": "workspace:*",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "vitest": "^2.1.0",

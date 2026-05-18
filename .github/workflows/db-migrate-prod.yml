@@ -1,0 +1,66 @@
+name: DB migrate · production
+
+# Production schema migrations. Manual trigger only.
+# Gated by the `production` GitHub Environment, which has a required-reviewer
+# rule — a human must Approve in the UI before the migrate step runs.
+#
+# Secrets required on the `production` environment:
+#   PROD_DIRECT_DATABASE_URL — postgres:// URL pointing at prod, port 5432
+#                              (direct, not pooled — Drizzle uses advisory locks).
+#
+# UAT migrations are not gated; run them locally with
+#   DIRECT_DATABASE_URL=<uat-direct-url> pnpm db:migrate
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "MIGRATE PROD" to confirm'
+        required: true
+        type: string
+
+concurrency:
+  group: db-migrate-prod
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    name: Confirmation guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check confirm string
+        run: |
+          if [ "${{ inputs.confirm }}" != "MIGRATE PROD" ]; then
+            echo "::error::confirm input must be exactly 'MIGRATE PROD'"
+            exit 1
+          fi
+
+  migrate:
+    name: Run Drizzle migrate against prod
+    needs: guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Show pending migrations
+        working-directory: packages/db
+        run: ls -1 migrations/*.sql
+
+      - name: Run migrations
+        env:
+          DIRECT_DATABASE_URL: ${{ secrets.PROD_DIRECT_DATABASE_URL }}
+        run: pnpm db:migrate
