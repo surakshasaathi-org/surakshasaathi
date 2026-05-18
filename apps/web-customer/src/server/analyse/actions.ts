@@ -1,11 +1,10 @@
 'use server';
 import { randomUUID, createHash } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { getAnalysisStore } from './store';
 import { runAnalysisPipeline, NotAHealthPolicyError, UpstreamUnavailableError } from './pipeline';
-import { localStoragePath } from './storage';
+import { uploadPolicyDocument, STORAGE_PATH_PREFIX } from './storage';
 import { supabaseServer } from '@/lib/supabase-server';
 import { headers } from 'next/headers';
 import {
@@ -87,12 +86,9 @@ export async function startAnalysis(input: StartAnalysisInput): Promise<StartAna
   const analysisId = randomUUID();
   const sessionToken = randomUUID();
 
-  const storagePath = `dev-local/${analysisId}/${sanitise(file.name)}`;
-  const absolutePath = localStoragePath(storagePath);
+  const storagePath = `${STORAGE_PATH_PREFIX}${analysisId}/${sanitise(file.name)}`;
   try {
-    const parentDir = absolutePath.slice(0, absolutePath.lastIndexOf('/'));
-    await mkdir(parentDir, { recursive: true });
-    await writeFile(absolutePath, bytes);
+    await uploadPolicyDocument(storagePath, bytes, file.type);
   } catch (err) {
     return {
       ok: false,

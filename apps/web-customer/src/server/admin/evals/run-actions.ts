@@ -1,25 +1,13 @@
 'use server';
 
 import { randomUUID } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
 import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { invokeAgent, type PersistRunFn } from '@suraksha/agent-sdk';
 import { serviceDb, schema } from '@suraksha/db';
 import { requireAdminSession } from '@/lib/admin/auth';
+import { downloadPolicyDocument } from '@/server/analyse/storage';
 import { syntheticPdfFromText } from './synthetic-pdf';
-
-const STORAGE_ROOT = '/tmp/suraksha-uploads';
-
-/**
- * Resolve the on-disk file path for a stored object. Mirrors the customer
- * helper at apps/web-customer/src/server/analyse/storage.ts — the `dev-local/`
- * prefix lives on the storage_path so prod (Supabase Storage) can route by
- * bucket; local dev strips it and writes flat under STORAGE_ROOT.
- */
-function fsPathFor(storagePath: string): string {
-  return `${STORAGE_ROOT}/${storagePath.replace(/^dev-local\//, '')}`;
-}
 
 /**
  * Resolve the attached PDF/image for a golden case.
@@ -50,12 +38,10 @@ async function resolveAttachment(
       .limit(1);
     if (doc) {
       try {
-        const buf = await readFile(fsPathFor(doc.storagePath));
+        const buf = await downloadPolicyDocument(doc.storagePath);
         return { mime: doc.mime, data: buf, source: 'uploaded_fixture' };
-      } catch (err) {
-        const e = err as NodeJS.ErrnoException;
-        if (e.code !== 'ENOENT') throw err;
-        // File missing — self-heal below.
+      } catch {
+        // Object missing in Supabase Storage — self-heal below.
       }
     }
     // Either policy_document row is gone or file is missing. Clear the link
