@@ -1,6 +1,7 @@
 'use server';
 import { randomUUID, createHash } from 'node:crypto';
 import { cookies } from 'next/headers';
+import { after } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getAnalysisStore } from './store';
 import { runAnalysisPipeline, NotAHealthPolicyError, UpstreamUnavailableError } from './pipeline';
@@ -176,7 +177,16 @@ export async function startAnalysis(input: StartAnalysisInput): Promise<StartAna
     await rememberAnonymousAnalysisId(analysisId);
   }
 
-  void runAnalysisPipeline(analysisId).catch(async (err: unknown) => {
+  // after() tells Vercel to keep the function alive until this work resolves,
+  // instead of freezing the instance the moment the response is returned.
+  // Without this, the detached promise dies mid-execution on Vercel — analysis
+  // rows get stuck in `ocr_running` with no error logged because the entire
+  // process disappears.
+  //
+  // Still bounded by the function's maxDuration (60s on Vercel Pro, 10s on
+  // Hobby). Files that need longer end-to-end runs require the Trigger.dev
+  // path — tracked as a follow-up.
+  after(() => runAnalysisPipeline(analysisId).catch(async (err: unknown) => {
     const msg = err instanceof Error ? err.message : String(err);
     console.error('[pipeline] analysis failed', { analysisId, err: msg });
     // Idempotency guard: only transition to 'failed' if the pipeline hasn't
@@ -218,7 +228,7 @@ export async function startAnalysis(input: StartAnalysisInput): Promise<StartAna
       errorCode: 'pipeline_error',
       errorMessage: msg.slice(0, 500),
     });
-  });
+  }));
 
   return { ok: true, analysisId };
 }
