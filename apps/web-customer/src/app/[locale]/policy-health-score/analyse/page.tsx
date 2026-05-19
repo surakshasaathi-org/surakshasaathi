@@ -1,6 +1,16 @@
 import { getFamilyAsDemographics } from '@/server/family/actions';
 import { AnalyseWizard } from '@/components/claims/analyse-wizard';
 
+// Extend the function timeout for the upload Server Action invoked from this
+// page. The analyse pipeline runs synchronously-after-response via after();
+// without this override Vercel kills the function at the default 10s, which
+// is rarely enough for an OCR + LLM pass even on small PDFs. 60s is the cap
+// on Vercel Pro; Hobby ignores this and stays at 10s.
+//
+// Longer durations require Vercel Pro + the upgraded Fluid Compute tier.
+// True multi-minute work must move to Trigger.dev (tracked follow-up).
+export const maxDuration = 60;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }
