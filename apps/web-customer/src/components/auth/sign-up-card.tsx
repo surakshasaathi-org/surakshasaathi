@@ -105,13 +105,15 @@ export function SignUpCard({ locale, next, googleEnabled }: Props) {
           <Check className="mt-0.5 size-4 flex-none text-success" />
           <div>
             <div className="font-medium text-ink">{message}</div>
-            <div className="mt-1 text-xs text-ink-muted">
-              Dev:{' '}
-              <a href="http://127.0.0.1:54324" target="_blank" rel="noopener" className="underline">
-                Mailpit
-              </a>{' '}
-              to open it.
-            </div>
+            {process.env.NEXT_PUBLIC_APP_ENV === 'local' && (
+              <div className="mt-1 text-xs text-ink-muted">
+                Dev:{' '}
+                <a href="http://127.0.0.1:54324" target="_blank" rel="noopener" className="underline">
+                  Mailpit
+                </a>{' '}
+                to open it.
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -26,6 +26,12 @@ export type LimitError =
 /**
  * At most 10 uploads / hour and 50 uploads / day per identity.
  * Uploads are identified by policy_analysis rows created_at within the window.
+ *
+ * super_admin users bypass the cap. Ops/dev accounts iterating on prod hit the
+ * limit while testing; the bypass keeps real customers throttled while
+ * keeping internal accounts unblocked. Promotion happens via the bootstrap
+ * flow (ADMIN_BOOTSTRAP_EMAIL) — if the membership row says super_admin,
+ * we trust it.
  */
 export async function assertUploadRateLimit(id: LimitIdentity): Promise<LimitError | null> {
   const db = serviceDb();
@@ -33,6 +39,19 @@ export async function assertUploadRateLimit(id: LimitIdentity): Promise<LimitErr
   const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
   if (id.userId) {
+    // super_admin bypass — see docstring.
+    const [member] = await db
+      .select({ role: schema.membership.role })
+      .from(schema.membership)
+      .where(
+        and(
+          eq(schema.membership.tenantId, id.tenantId),
+          eq(schema.membership.userId, id.userId),
+        ),
+      )
+      .limit(1);
+    if (member?.role === 'super_admin') return null;
+
     // Signed-in users — counted by policy_analysis rows.
     const userClause = eq(schema.policyAnalysis.userId, id.userId);
     const [hourRow] = await db
