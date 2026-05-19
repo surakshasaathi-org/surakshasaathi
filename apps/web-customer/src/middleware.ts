@@ -27,8 +27,15 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createIntlMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  const isAdmin = request.nextUrl.pathname.startsWith('/admin');
-  const response = isAdmin ? NextResponse.next() : intlMiddleware(request);
+  const path = request.nextUrl.pathname;
+  // Skip next-intl for the surfaces that aren't locale-routed:
+  //   /admin/*  — English-only ops portal
+  //   /auth/*   — Supabase OAuth/magic-link callback (e.g. /auth/callback?code=...).
+  //               Without this carve-out, next-intl 308s /auth/callback →
+  //               /en/auth/callback which doesn't exist as a route, and Google
+  //               sign-in lands on a Vercel 404.
+  const skipIntl = path.startsWith('/admin') || path.startsWith('/auth');
+  const response = skipIntl ? NextResponse.next() : intlMiddleware(request);
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
