@@ -4,6 +4,13 @@ surakshasaathi.com — India's Protection Companion. Long-horizon platform (5+ y
 
 **Source docs** (authoritative): `docs/SurakshaSaathi_Product_Strategy.docx` and `docs/SurakshaSaathi_Claude_Code_Instructions.docx`. Readable markdown extracts alongside. This CLAUDE.md condenses them plus in-session decisions.
 
+## Session Decisions — 2026-05-19 (Trigger.dev for analyse pipeline)
+
+- **Background jobs:** Trigger.dev v3 wired for the analyse pipeline. Single project `surakshasaathi` (ref `proj_afbawgljgtebkvjvpiws`); `development` env key for local + Vercel Preview, `production` env key for Vercel Production. See ADR 0008.
+- **Why now:** the `after()` + `maxDuration=60` path proven insufficient in prod 2026-05-18 (`Vercel Runtime Timeout Error: Task timed out after 60 seconds`). Vercel's 60s ceiling is non-negotiable; durable background execution was the only path forward for realistic-sized policy PDFs.
+- **New env vars:** `TRIGGER_SECRET_KEY`, `TRIGGER_PROJECT_REF`, `TRIGGER_API_URL`. Documented in `.env.example`.
+- **Deploy step:** `npx trigger.dev@latest deploy` runs once per change to `apps/web-customer/src/trigger/*` for prod. Manual today; CI-integration tracked as follow-up.
+
 ## Session Decisions — 2026-05-18 (Infra Bootstrap)
 
 - **Repo:** `surakshasaathi-org/surakshasaathi` (private). Personal handle `surakshasaathi` transferred to org `surakshasaathi-org`.

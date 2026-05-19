@@ -1,11 +1,11 @@
 'use server';
 import { randomUUID, createHash } from 'node:crypto';
 import { cookies } from 'next/headers';
-import { after } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { tasks } from '@trigger.dev/sdk';
 import { getAnalysisStore } from './store';
-import { runAnalysisPipeline, NotAHealthPolicyError, UpstreamUnavailableError } from './pipeline';
 import { uploadPolicyDocument, STORAGE_PATH_PREFIX } from './storage';
+import type { analyseTask } from '@/trigger/analyse-pipeline';
 import { supabaseServer } from '@/lib/supabase-server';
 import { headers } from 'next/headers';
 import {
@@ -49,7 +49,8 @@ export type StartAnalysisResult =
         | 'upload_failed'
         | 'rate_limit_uploads_hour'
         | 'rate_limit_uploads_day'
-        | 'cost_cap_daily';
+        | 'cost_cap_daily'
+        | 'enqueue_failed';
       message: string;
     };
 
@@ -177,58 +178,27 @@ export async function startAnalysis(input: StartAnalysisInput): Promise<StartAna
     await rememberAnonymousAnalysisId(analysisId);
   }
 
-  // after() tells Vercel to keep the function alive until this work resolves,
-  // instead of freezing the instance the moment the response is returned.
-  // Without this, the detached promise dies mid-execution on Vercel — analysis
-  // rows get stuck in `ocr_running` with no error logged because the entire
-  // process disappears.
+  // Hand the pipeline off to Trigger.dev. The task runs in a managed
+  // runtime independent of this Vercel function's lifecycle — see ADR 0008.
+  // Returns once the task is enqueued (sub-100ms); the analysis row's
+  // status column is the source of truth for progress from here on.
   //
-  // Still bounded by the function's maxDuration (60s on Vercel Pro, 10s on
-  // Hobby). Files that need longer end-to-end runs require the Trigger.dev
-  // path — tracked as a follow-up.
-  after(() => runAnalysisPipeline(analysisId).catch(async (err: unknown) => {
+  // Failure paths (NotAHealthPolicyError / UpstreamUnavailableError /
+  // generic) are handled inside the task. We catch enqueue failures here
+  // so the row is finalised even if Trigger.dev itself is unreachable.
+  try {
+    await tasks.trigger<typeof analyseTask>('analyse-pipeline', { analysisId });
+  } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    console.error('[pipeline] analysis failed', { analysisId, err: msg });
-    // Idempotency guard: only transition to 'failed' if the pipeline hasn't
-    // already reached a terminal state. Otherwise a late-thrown error (e.g.
-    // in a cleanup step) would clobber a successful 'ready' row.
-    const current = await getAnalysisStore().get(analysisId);
-    if (!current) return;
-    if (current.status === 'ready' || current.status === 'failed') return;
-
-    // Intake-gate rejection gets a distinct error code so the UI can show a
-    // targeted "this isn't a health policy" message instead of a generic
-    // pipeline failure. Users who think we got it wrong can retry or contact us.
-    if (err instanceof NotAHealthPolicyError) {
-      await getAnalysisStore().update(analysisId, {
-        status: 'failed',
-        progressStep: null,
-        errorCode: 'not_a_policy',
-        errorMessage: `${err.detectedType}: ${err.reason}`.slice(0, 500),
-      });
-      return;
-    }
-
-    // Upstream LLM provider failure (Gemini 429/5xx etc.) — the document is
-    // probably fine, we just couldn't reach the model. Show a retry-friendly
-    // banner rather than implying the user did something wrong.
-    if (err instanceof UpstreamUnavailableError) {
-      await getAnalysisStore().update(analysisId, {
-        status: 'failed',
-        progressStep: null,
-        errorCode: 'upstream_unavailable',
-        errorMessage: `Stage ${err.stage} failed: ${msg}`.slice(0, 500),
-      });
-      return;
-    }
-
+    console.error('[analyse] failed to enqueue task', { analysisId, err: msg });
     await getAnalysisStore().update(analysisId, {
       status: 'failed',
       progressStep: null,
-      errorCode: 'pipeline_error',
+      errorCode: 'enqueue_failed',
       errorMessage: msg.slice(0, 500),
     });
-  }));
+    return { ok: false, code: 'enqueue_failed', message: 'Could not start analysis. Please try again in a minute.' };
+  }
 
   return { ok: true, analysisId };
 }
