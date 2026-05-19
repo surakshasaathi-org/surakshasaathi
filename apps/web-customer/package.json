@@ -26,6 +26,7 @@
     "@sentry/nextjs": "^8.42.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
+    "@trigger.dev/sdk": "^4.4.6",
     "lucide-react": "^0.454.0",
     "next": "^15.0.3",
     "next-intl": "^3.26.0",
@@ -33,6 +34,7 @@
     "react-dom": "^19.0.0-rc-02c0e824-20241028"
   },
   "devDependencies": {
+    "@trigger.dev/build": "^4.4.6",
     "@types/node": "^20.14.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
