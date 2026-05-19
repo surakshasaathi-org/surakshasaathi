@@ -524,20 +524,29 @@ async function runReal(analysisId: string) {
     errorMessage: coverage ? null : coverageError,
   });
 
-  // Background: compute + persist the readiness score. Best-effort — failure
-  // here must never flip the analysis status or the email send. Scoring is
-  // internal-only by default (per product decision #7 — gated behind
-  // `policy_score.is_internal=true` until calibration month completes).
-  computeAndStoreScore({
-    tenantId: rec.tenantId,
-    analysisId,
-    userId: rec.userId,
-    extractor: enrichExtractor(extractor),
-  }).catch((err) => {
+  // Compute + persist the readiness score. Best-effort — wrapped in
+  // try/catch so a scorer failure doesn't flip the analysis status or
+  // block the email send. Scoring is internal-only by default (per
+  // product decision #7 — gated behind `policy_score.is_internal=true`
+  // until calibration month completes).
+  //
+  // MUST be awaited: pre-Trigger.dev this ran as a detached promise that
+  // got killed when the function returned on Vercel — score never landed
+  // for any user, the analysis result page showed a blank score panel
+  // until the user clicked "recompute". Now that the pipeline runs in
+  // Trigger.dev (15-min cap), awaiting is safe.
+  try {
+    await computeAndStoreScore({
+      tenantId: rec.tenantId,
+      analysisId,
+      userId: rec.userId,
+      extractor: enrichExtractor(extractor),
+    });
+  } catch (err) {
     console.warn(
       `[pipeline] readiness-score compute failed (non-fatal) analysisId=${analysisId} err=${(err as Error).message}`,
     );
-  });
+  }
 
   // Fire the "analysis ready" email for signed-in users. Best-effort: email
   // failures must never fail the pipeline. The dedupe key on enqueueNotification
