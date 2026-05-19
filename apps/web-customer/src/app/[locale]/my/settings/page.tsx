@@ -29,8 +29,8 @@ export default async function SettingsPage({ params }: Props) {
           Account &amp; privacy
         </h1>
         <p className="mt-2 max-w-prose text-ink-muted">
-          Update your profile, change language, toggle granular DPDP consents, export your data
-          (right-to-access), or delete your account.
+          Update your profile, change language, toggle data-use consents, export your data, or
+          delete your account.
         </p>
       </header>
 

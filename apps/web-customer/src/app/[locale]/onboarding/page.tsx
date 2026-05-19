@@ -60,8 +60,7 @@ export default async function OnboardingPage({ params, searchParams }: Props) {
         </div>
 
         <p className="mt-6 text-xs text-ink-subtle">
-          Your data is stored on Indian servers per DPDP Act 2023. We never share your phone or DOB
-          with insurers.
+          Your data is stored on Indian servers. We never share your phone or DOB with insurers.
         </p>
       </Container>
     </section>

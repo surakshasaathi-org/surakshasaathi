@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn';
  * Compliance footer strip. The four things Indian health-insurance buyers
  * actually care about before handing over a policy PDF:
  *   - We're NOT a broker (advisory-only)
- *   - DPDP Act 2023 compliance
+ *   - Granular consent + data control
  *   - Servers in India
  *   - Delete-everything escape hatch
  *
@@ -26,8 +26,8 @@ export function TrustStrip({ tone = 'light' }: Props) {
     },
     {
       icon: Lock,
-      title: 'DPDP Act 2023',
-      body: 'Granular consent, right-to-access, right-to-erasure. Enforced in product.',
+      title: 'Your data, your control',
+      body: 'Granular consent toggles. Export or delete everything any time. Enforced in product.',
     },
     {
       icon: Server,

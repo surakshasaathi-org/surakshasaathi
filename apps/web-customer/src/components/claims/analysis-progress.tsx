@@ -319,7 +319,7 @@ const TIDBITS = [
   },
   {
     headline: 'We never share your policy with insurers',
-    body: 'DPDP-compliant, India-region servers, 7-day default retention. Your document is yours, not theirs.',
+    body: 'India-region servers, 7-day default retention. Your document is yours, not theirs.',
   },
 ];
 

@@ -64,7 +64,7 @@ export default async function LandingPage({ params }: Props) {
             </div>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-ink-subtle">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="size-3.5 text-primary" /> DPDP-compliant · India-region servers
+                <ShieldCheck className="size-3.5 text-primary" /> Your data, your control · India-region servers
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="size-3.5 text-primary" /> 60–120 seconds
@@ -178,8 +178,8 @@ export default async function LandingPage({ params }: Props) {
         <div className="grid gap-4 sm:grid-cols-3">
           <TrustTile
             icon={<ShieldCheck className="size-5" />}
-            title="DPDP-compliant"
-            body="India-region servers. We collect only what we need. Granular consent. 7-day retention by default."
+            title="Your data, your control"
+            body="India-region servers. We collect only what we need. Granular consent toggles. Export or delete everything any time."
           />
           <TrustTile
             icon={<CheckCircle2 className="size-5" />}

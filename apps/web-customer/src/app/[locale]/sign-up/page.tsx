@@ -46,8 +46,7 @@ export default async function SignUpPage({ params, searchParams }: Props) {
         <Link href={`/${locale}/privacy`} className="underline">
           Privacy Policy
         </Link>
-        . Your data stays on Indian servers under DPDP Act 2023 — delete everything any time from
-        Settings.
+        . Your data stays on Indian servers — export or delete everything any time from Settings.
       </p>
     </AuthSplit>
   );

@@ -26,7 +26,7 @@ import { listProductModules } from '@/server/admin/products/queries';
  * Two-section sidebar:
  *
  *   PLATFORM  — cross-cutting ops surfaces (overview, global agents registry,
- *               global evals, users, flags, DPDP, audit, settings). These are
+ *               global evals, users, flags, data requests, audit, settings). These are
  *               about the system, not any one product.
  *
  *   PRODUCTS  — one link per product_module. Clicking lands on a hub that
@@ -42,26 +42,30 @@ interface PlatformItem {
   roles: string[];
 }
 
+// All admin routes are nested under /admin/* in the merged web-customer app
+// (per ADR 0007). Pre-merge, web-admin was its own app and bare paths worked;
+// after the merge, every link needs the /admin/ prefix or it 404s into the
+// customer surface.
 const PLATFORM: PlatformItem[] = [
-  { label: 'Overview', href: '/', icon: BarChart3, roles: ['super_admin', 'admin', 'viewer'] },
-  { label: 'Agents', href: '/agents', icon: Wand2, roles: ['super_admin', 'content_editor'] },
+  { label: 'Overview', href: '/admin', icon: BarChart3, roles: ['super_admin', 'admin', 'viewer'] },
+  { label: 'Agents', href: '/admin/agents', icon: Wand2, roles: ['super_admin', 'content_editor'] },
   {
     label: 'Evals',
-    href: '/evals',
+    href: '/admin/evals',
     icon: FlaskConical,
     roles: ['super_admin', 'admin', 'content_editor', 'viewer'],
   },
   {
     label: 'Reviews',
-    href: '/reviews',
+    href: '/admin/reviews',
     icon: FileCheck2,
     roles: ['super_admin', 'admin', 'case_manager', 'reviewer'],
   },
-  { label: 'Users & roles', href: '/users', icon: Users, roles: ['super_admin', 'admin'] },
-  { label: 'Feature flags', href: '/flags', icon: Flag, roles: ['super_admin', 'admin'] },
-  { label: 'DPDP requests', href: '/dpdp', icon: Lock, roles: ['super_admin', 'admin'] },
-  { label: 'Audit log', href: '/audit', icon: ShieldCheck, roles: ['super_admin'] },
-  { label: 'Settings', href: '/settings', icon: Cog, roles: ['super_admin', 'admin'] },
+  { label: 'Users & roles', href: '/admin/users', icon: Users, roles: ['super_admin', 'admin'] },
+  { label: 'Feature flags', href: '/admin/flags', icon: Flag, roles: ['super_admin', 'admin'] },
+  { label: 'Data requests', href: '/admin/dpdp', icon: Lock, roles: ['super_admin', 'admin'] },
+  { label: 'Audit log', href: '/admin/audit', icon: ShieldCheck, roles: ['super_admin'] },
+  { label: 'Settings', href: '/admin/settings', icon: Cog, roles: ['super_admin', 'admin'] },
 ];
 
 const PRODUCT_ICONS: Record<string, React.ElementType> = {
@@ -112,7 +116,7 @@ export async function AdminShell({
               return (
                 <NavLink
                   key={m.id}
-                  href={`/products/${m.id}`}
+                  href={`/admin/products/${m.id}`}
                   icon={Icon}
                   label={m.name}
                   badge={m.status === 'beta' ? 'beta' : m.status === 'skeleton' ? 'wip' : undefined}
