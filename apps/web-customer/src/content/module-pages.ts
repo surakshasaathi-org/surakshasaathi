@@ -501,7 +501,7 @@ export const MODULE_PAGES: Record<string, ByLocale> = {
       launchNote: 'Launching in the next phase. Subscription-based — ₹399/year per family. Join the waitlist.',
       faqs: [
         { q: 'How is this different from a spreadsheet?', a: 'OCR reads the policy PDF and extracts all fields automatically. Alerts fire without you remembering. Emergency access works from any device. The insurer-stamp on nominee accuracy is validated automatically.' },
-        { q: 'Do you store the policy documents?', a: 'Yes — encrypted at rest on Supabase India (AWS Mumbai). You can export or delete your vault at any time. DPDP Act 2023 compliant.' },
+        { q: 'Do you store the policy documents?', a: 'Yes — encrypted at rest on Indian servers (AWS Mumbai). You can export or delete your vault at any time.' },
       ],
     },
     hi: {
@@ -529,7 +529,7 @@ export const MODULE_PAGES: Record<string, ByLocale> = {
       launchNote: 'अगले चरण में लॉन्च। ₹399/वर्ष। वेटलिस्ट में जुड़ें।',
       faqs: [
         { q: 'स्प्रेडशीट से अलग कैसे?', a: 'OCR पॉलिसी पढ़कर सब फ़ील्ड निकालता है। अलर्ट याद रखने की ज़रूरत नहीं। किसी भी डिवाइस से आपातकालीन पहुँच।' },
-        { q: 'क्या आप दस्तावेज़ स्टोर करते हैं?', a: 'हाँ — भारतीय सर्वर पर एन्क्रिप्टेड। कभी भी एक्सपोर्ट/डिलीट। DPDP अनुरूप।' },
+        { q: 'क्या आप दस्तावेज़ स्टोर करते हैं?', a: 'हाँ — भारतीय सर्वर पर एन्क्रिप्टेड। कभी भी एक्सपोर्ट/डिलीट।' },
       ],
     },
     kn: {
@@ -557,7 +557,7 @@ export const MODULE_PAGES: Record<string, ByLocale> = {
       launchNote: 'ಮುಂದಿನ ಹಂತ. ₹399/ವರ್ಷ. ವೇಟ್‌ಲಿಸ್ಟ್.',
       faqs: [
         { q: 'ಸ್ಪ್ರೆಡ್‌ಶೀಟ್‌ಗಿಂತ ಹೇಗೆ ಬೇರೆ?', a: 'OCR ಪಾಲಿಸಿ ಓದಿ ಕ್ಷೇತ್ರ ಹೊರತೆಗೆಯುತ್ತದೆ. ಎಚ್ಚರಿಕೆಗಳು ಸ್ವಯಂ. ಯಾವುದೇ ಸಾಧನದಿಂದ ತುರ್ತು ಪ್ರವೇಶ.' },
-        { q: 'ದಸ್ತಾವೇಜುಗಳನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೀರಾ?', a: 'ಹೌದು — ಭಾರತೀಯ ಸರ್ವರ್‌ನಲ್ಲಿ ಎನ್‌ಕ್ರಿಪ್ಟೆಡ್. ಯಾವಾಗಲೂ ರಫ್ತು/ಅಳಿಸಿ. DPDP ಅನುಸಾರ.' },
+        { q: 'ದಸ್ತಾವೇಜುಗಳನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೀರಾ?', a: 'ಹೌದು — ಭಾರತೀಯ ಸರ್ವರ್‌ನಲ್ಲಿ ಎನ್‌ಕ್ರಿಪ್ಟೆಡ್. ಯಾವಾಗಲೂ ರಫ್ತು/ಅಳಿಸಿ.' },
       ],
     },
   },

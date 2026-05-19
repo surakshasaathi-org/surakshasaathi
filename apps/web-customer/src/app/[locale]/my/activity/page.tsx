@@ -82,7 +82,7 @@ export default async function ActivityPage({ searchParams }: Props) {
         </h1>
         <p className="mt-2 max-w-prose text-ink-muted">
           Chronological record of your analyses, chats, policy updates, notifications, and
-          feedback. Useful when you're asking "when did I…?" or filing a DPDP data-access request.
+          feedback. Useful when you're asking "when did I…?" or requesting your data on file.
         </p>
       </header>
 

@@ -1,5 +1,5 @@
 /**
- * DPDP consent purposes + types. Split from consent.ts so Next.js 15's
+ * Granular consent purposes + types. Split from consent.ts so Next.js 15's
  * 'use server' rule (only async exports allowed) stays satisfied — non-
  * async values live here, async Server Actions live in consent.ts.
  */
@@ -28,7 +28,7 @@ export const CONSENT_PURPOSES: ConsentPurposeDef[] = [
     id: 'health_pii_processing',
     label: 'Process health + family details',
     description:
-      "Use the ages, pre-existing conditions, and medications you share to tailor coverage cards for YOUR family. Stored on Indian servers under DPDP.",
+      "Use the ages, pre-existing conditions, and medications you share to tailor coverage cards for YOUR family. Stored on Indian servers; you can withdraw consent any time.",
     required: false,
     defaultGranted: true,
   },

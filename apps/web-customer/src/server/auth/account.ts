@@ -100,7 +100,7 @@ export async function exportMyData(): Promise<
       chatMessages: chat,
       feedback,
       note:
-        'This export is the machine-readable record of your data under DPDP Act 2023. ' +
+        'This export is the machine-readable record of your data. ' +
         'Agent-run metadata (tokens, costs) is available on request — email support@surakshasaathi.com.',
     },
   };

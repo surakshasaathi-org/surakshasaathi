@@ -4,6 +4,96 @@ surakshasaathi.com — India's Protection Companion. Long-horizon platform (5+ y
 
 **Source docs** (authoritative): `docs/SurakshaSaathi_Product_Strategy.docx` and `docs/SurakshaSaathi_Claude_Code_Instructions.docx`. Readable markdown extracts alongside. This CLAUDE.md condenses them plus in-session decisions.
 
+## Infrastructure Status (authoritative — update on every infra change)
+
+> **Maintenance rule:** every PR that adds an env var, wires a new vendor, or changes a deploy path must update this section in the same commit. If this drifts, future sessions will make decisions on stale facts.
+
+### Vendors wired
+
+| Surface | Vendor | Status | Owner email | Notes |
+|---|---|---|---|---|
+| Repo + CI | GitHub | active | admin@surakshasaathi.com | Org `surakshasaathi-org` (free plan; branch protection deferred — see ADR 0006). |
+| Web hosting | Vercel | active | admin@surakshasaathi.com | Team `anand-s-projects8`, project `surakshasaathi-customer`. Single Next.js app (ADR 0007). Auto-deploys `main`. |
+| DB + Auth + Storage | Supabase | active | admin@surakshasaathi.com | Two projects: UAT `roujwqeomynysjkvgfpf` (Sydney `ap-southeast-2`, test data only), Prod `ipdavoxivtrgcvxbfsvr` (**region pending confirmation — must be Mumbai for DPDP, see ADR 0006**). |
+| Background jobs | Trigger.dev | active | admin@surakshasaathi.com | Project `surakshasaathi` ref `proj_afbawgljgtebkvjvpiws`. Env-var values set in Trigger.dev dashboard (not deploy-time env). See ADR 0008. |
+| LLM | Anthropic + Google Gemini | active | admin@surakshasaathi.com | Anthropic for digitizer/extractor/reviewer; Gemini for cheaper-tier routing. Keys live in Vercel + Trigger.dev runtime env vars. |
+| Domain registrar | GoDaddy | active | admin@surakshasaathi.com | `surakshasaathi.com`. DNS still on GoDaddy defaults — Vercel domain wiring pending. |
+| Transactional email | Google Workspace SMTP | **pending** | noreply@surakshasaathi.com (planned) | Decided 2026-05-19. To configure: dedicated Workspace user + app password → Supabase Auth → SMTP. |
+| Error monitoring | Sentry | **pending** | n/a | Env-var slots reserved; DSN not yet wired. |
+| Payments | Razorpay | not started | — | Phase 2. |
+| Messaging | WATI (WhatsApp), MSG91 (SMS-OTP) | not started | — | Phase 2. |
+
+### Vercel project structure
+
+- Single project `surakshasaathi-customer` deploys `apps/web-customer` (merged with `apps/web-admin` per ADR 0007). `web-partner` and `web-support` stay in repo but not deployed.
+- Three env scopes: **Production** (prod Supabase + live keys), **Preview** (UAT Supabase + dev keys), **Development** (same as Preview).
+- `next.config.mjs` has `typescript.ignoreBuildErrors=true` + `eslint.ignoreDuringBuilds=true` as a baseline workaround (PR #5). Flip back to `false` when baseline is cleaned up.
+
+### Trigger.dev environments
+
+- `Development` env = local laptop dev server + Vercel Preview. Uses `tr_dev_*` API key.
+- `Production` env = Vercel Production. Uses `tr_prod_*` API key.
+- **Env vars must be set in the Trigger.dev dashboard per environment** — they do NOT inherit from Vercel or the deploy-time machine. See ADR 0008. Same env-var list as Vercel runtime (DB URLs, Supabase keys, LLM keys, model names, USD_TO_PAISE).
+- Deploy step: `npx trigger.dev@latest deploy` (manual today, CI integration tracked as follow-up).
+
+### Database connection conventions
+
+- `DATABASE_URL` = Transaction pooler `:6543`. Used by app runtime queries (`serviceDb()` and `tenantDb()`).
+- `DIRECT_DATABASE_URL` = misleading name; varies by context:
+  - In **Vercel + Trigger.dev runtime** → Transaction pooler `:6543` (NOT direct host). Required because `serviceDb()` reads this var, and runtime needs the high-concurrency pooler.
+  - In **local `.env.local`** + GitHub Actions `PROD_DIRECT_DATABASE_URL` secret → Session pooler `:5432` on `pooler.supabase.com` host. Required for Drizzle's advisory locks during migrations.
+  - Never use the `db.<projectref>.supabase.co` direct host — IPv6-only, breaks Vercel and most networks.
+- Rename to two separate vars (`RUNTIME_DATABASE_URL` / `MIGRATION_DATABASE_URL`) is tracked as a follow-up to eliminate this confusion.
+
+### Env var matrix (authoritative)
+
+For each variable below: **server-only** means no `NEXT_PUBLIC_` prefix (kept out of client bundle). Set in **Vercel** for the Next.js app + **Trigger.dev dashboard** for the analyse task.
+
+| Variable | Production value | Preview/Dev value | Where set | Server-only? |
+|---|---|---|---|---|
+| `NODE_ENV` | `production` | `production` (Trigger) / dev (local) | Vercel + Trigger | No |
+| `NEXT_PUBLIC_APP_ENV` | `production` | `uat` | Vercel + Trigger | No |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://ipdavoxivtrgcvxbfsvr.supabase.co` | `https://roujwqeomynysjkvgfpf.supabase.co` | Vercel + Trigger | No |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | prod `sb_publishable_*` | UAT `sb_publishable_*` | Vercel + Trigger | No |
+| `SUPABASE_SERVICE_ROLE_KEY` | prod `sb_secret_*` | UAT `sb_secret_*` | Vercel + Trigger | **Yes** |
+| `DATABASE_URL` | prod Transaction pooler `:6543` URI | UAT Transaction pooler `:6543` URI | Vercel + Trigger | **Yes** |
+| `DIRECT_DATABASE_URL` | prod Transaction pooler `:6543` URI (runtime) | UAT Transaction pooler `:6543` URI (runtime) | Vercel + Trigger | **Yes** |
+| `ANTHROPIC_API_KEY` | live Anthropic key | dev/test key | Vercel + Trigger | **Yes** |
+| `GOOGLE_API_KEY` | live Gemini key | dev/test key | Vercel + Trigger | **Yes** |
+| `GEMINI_MODEL_OPUS` | `gemini-2.5-pro` | `gemini-2.5-pro` | Vercel + Trigger | No |
+| `GEMINI_MODEL_SONNET` | `gemini-2.5-flash` | `gemini-2.5-flash` | Vercel + Trigger | No |
+| `GEMINI_MODEL_HAIKU` | `gemini-2.0-flash-lite` | `gemini-2.0-flash-lite` | Vercel + Trigger | No |
+| `USD_TO_PAISE` | `8600` | `8600` | Vercel + Trigger | No |
+| `ADMIN_BOOTSTRAP_EMAIL` | `admin@surakshasaathi.com` | `admin-uat@surakshasaathi.com` | Vercel + Trigger | No |
+| `TRIGGER_SECRET_KEY` | prod `tr_prod_*` | dev `tr_dev_*` | **Vercel only** | **Yes** |
+| `TRIGGER_PROJECT_REF` | `proj_afbawgljgtebkvjvpiws` | `proj_afbawgljgtebkvjvpiws` | **Vercel only** | No |
+| `TRIGGER_API_URL` | `https://api.trigger.dev` | `https://api.trigger.dev` | **Vercel only** | No |
+| `NEXT_PUBLIC_GOOGLE_OAUTH_ENABLED` | `true` (when configured) | `true` (when configured) | Vercel | No |
+| `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` | from Google Cloud Console OAuth | same | Vercel | No |
+| `SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET` | from Google Cloud Console OAuth | same | Vercel | **Yes** |
+
+Pending env vars (not yet wired): `RAZORPAY_*`, `WATI_*`, `MSG91_*`, `SENTRY_DSN` + `NEXT_PUBLIC_SENTRY_DSN` + `SENTRY_AUTH_TOKEN` + `SENTRY_ORG` + `SENTRY_PROJECT`, `TRIGGER_PROJECT_ID` (legacy — superseded by `TRIGGER_PROJECT_REF`).
+
+### Deploy paths
+
+| What | When | How |
+|---|---|---|
+| Next.js app (customer + admin) | every push to `main` | Vercel auto-deploy |
+| Trigger.dev tasks (`apps/web-customer/src/trigger/*`) | manual today | `cd apps/web-customer && npx trigger.dev@latest deploy` per env. CI integration tracked. |
+| Prod DB migrations | manual, gated | `db-migrate-prod` GitHub Actions workflow → `production` GitHub Environment with required reviewer. Reads `PROD_DIRECT_DATABASE_URL` secret. |
+| UAT DB migrations | manual, ungated | `pnpm db:migrate` from laptop with UAT `DIRECT_DATABASE_URL` (Session pooler `:5432`). |
+| Supabase Storage buckets | applied via migration | Bucket `policy-documents` created by migration 0016. |
+| Trigger.dev env vars | manual | Trigger.dev dashboard → Project Settings → Environment Variables. Required before any task deploy. |
+| Vercel env vars | manual | Vercel dashboard → Project Settings → Environment Variables. |
+
+### Things that intentionally do NOT exist yet
+
+- Staging environment between UAT and prod (ADR 0006 — single-vendor cost discipline at MVP).
+- Branch protection on `main` (GitHub Free plan paywall — ADR 0006).
+- A `staging` Trigger.dev environment (free tier limit).
+- Resend / Postmark / SES for email (using Workspace SMTP at MVP — decided 2026-05-19).
+- A reverse proxy or CDN in front of Vercel (Cloudflare in front etc.).
+
 ## Session Decisions — 2026-05-19 (Trigger.dev for analyse pipeline)
 
 - **Background jobs:** Trigger.dev v3 wired for the analyse pipeline. Single project `surakshasaathi` (ref `proj_afbawgljgtebkvjvpiws`); `development` env key for local + Vercel Preview, `production` env key for Vercel Production. See ADR 0008.

@@ -19,7 +19,7 @@ export default async function AdminHome() {
         <StatCard title="Agent spend (MTD)" value="—" detail="in paise" />
         <StatCard title="Success fees earned" value="—" detail="MTD" />
         <StatCard title="Subscriptions" value="—" detail="active" />
-        <StatCard title="DPDP requests" value="—" detail="open" />
+        <StatCard title="Data requests" value="—" detail="open" />
       </div>
     </AdminShell>
   );

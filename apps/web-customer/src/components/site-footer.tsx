@@ -41,7 +41,6 @@ export function SiteFooter() {
           links={[
             [t('links.privacy'), '/legal/privacy'],
             [t('links.terms'), '/legal/terms'],
-            [t('links.dpdp'), '/legal/dpdp'],
             [t('links.grievance'), '/legal/grievance-officer'],
           ]}
         />

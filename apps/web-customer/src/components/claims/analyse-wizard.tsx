@@ -148,7 +148,7 @@ export function AnalyseWizard({ locale, familyPrefill, uploadStrings }: Props) {
             {/* Trust strip */}
             <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-subtle">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="size-3.5 text-primary" /> DPDP-compliant · India servers
+                <ShieldCheck className="size-3.5 text-primary" /> Your data, your control · India servers
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="size-3.5 text-primary" /> 7-day default retention

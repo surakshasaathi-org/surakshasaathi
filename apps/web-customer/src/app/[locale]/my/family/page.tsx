@@ -52,8 +52,8 @@ export default async function FamilyPage() {
 
       <div className="mt-10 rounded-xl border border-border bg-background/60 p-4 text-xs text-ink-subtle">
         <strong className="font-semibold text-ink">Privacy:</strong> your family data stays on
-        Indian servers under DPDP Act 2023. We never share it with insurers; it's used only to
-        tailor your reports. You can export or delete all of it any time from{' '}
+        Indian servers. We never share it with insurers; it's used only to tailor your reports. You
+        can export or delete all of it any time from{' '}
         <a href="./settings" className="text-primary underline">
           Settings
         </a>

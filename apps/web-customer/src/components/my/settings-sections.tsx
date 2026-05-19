@@ -72,7 +72,7 @@ export function SettingsSections({
   );
 }
 
-/* ────────── Consents (DPDP) ────────── */
+/* ────────── Consents ────────── */
 
 function ConsentSection({
   consents,
@@ -84,7 +84,7 @@ function ConsentSection({
   return (
     <SectionCard
       title="Privacy & consents"
-      subtitle="DPDP Act 2023 gives you granular control over how your data is used. Toggle any purpose off any time — we append an audit entry on every change."
+      subtitle="Granular control over how your data is used. Toggle any purpose off any time — we append an audit entry on every change."
       icon={<ShieldCheck className="size-4 text-primary" />}
     >
       <ConsentToggles purposes={purposes} initialStates={consents} />
@@ -280,7 +280,7 @@ function ExportSection() {
   return (
     <SectionCard
       title="Export your data"
-      subtitle="Under DPDP Act 2023 you have the right to access everything we hold on you. Download it as a JSON file any time."
+      subtitle="Download everything we hold on you as a JSON file, any time."
       icon={<Download className="size-4 text-primary" />}
     >
       <Button type="button" variant="outline" onClick={onExport} disabled={pending}>
